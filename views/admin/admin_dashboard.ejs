@@ -1,0 +1,269 @@
+<%- include('../layouts/header.ejs') %>
+<%- include('../layouts/admin_navbar.ejs') %>
+
+<style>
+  .records-section {
+    background: #f0f2f5;
+    min-height: 100vh;
+    padding: 3rem 0;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 0.2rem;
+  }
+
+  .page-subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .total-badge {
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.5rem 1.1rem;
+    border-radius: 50px;
+    letter-spacing: 0.04em;
+  }
+
+  .emp-card {
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+  }
+
+  .emp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  }
+
+  .emp-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .emp-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0;
+  }
+
+  .emp-email {
+    font-size: 0.78rem;
+    color: #6c757d;
+    margin: 0;
+  }
+
+  .emp-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 1rem 0;
+  }
+
+  .emp-meta-label {
+    font-size: 0.7rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.15rem;
+  }
+
+  .emp-meta-value {
+    font-size: 0.83rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .role-pill {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    background: #ede9fe;
+    color: #5b21b6;
+  }
+
+  .btn-edit {
+    flex: 1;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: 1.5px solid #4f46e5;
+    color: #4f46e5;
+    background: transparent;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    transition: background 0.18s, color 0.18s;
+  }
+
+  .btn-edit:hover {
+    background: #4f46e5;
+    color: #fff;
+  }
+
+  .btn-delete {
+    flex: 1;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: 1.5px solid #ef4444;
+    color: #ef4444;
+    background: transparent;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    transition: background 0.18s, color 0.18s;
+  }
+
+  .btn-delete:hover {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  .empty-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .empty-icon-wrap {
+    width: 64px;
+    height: 64px;
+    background: #fff1f0;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+  }
+
+  .empty-icon-wrap i {
+    font-size: 1.8rem;
+    color: #ef4444;
+  }
+
+  .empty-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 0.4rem;
+  }
+
+  .empty-sub {
+    font-size: 0.88rem;
+    color: #6c757d;
+    margin: 0;
+  }
+</style>
+
+<section class="records-section">
+  <div class="container-xl">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="page-title">Employee Records</h2>
+        <p class="page-subtitle">Manage and view all employee data</p>
+      </div>
+      <span class="total-badge">
+        Total &nbsp;·&nbsp; <%= data ? data.length : 0 %>
+      </span>
+    </div>
+
+    <div class="row g-4">
+
+      <% if(!data || data.length === 0){ %>
+
+        <div class="col-12">
+          <div class="empty-card">
+            <div class="empty-icon-wrap">
+              <i class="bi bi-person-x-fill"></i>
+            </div>
+            <h4 class="empty-title">No Records Found</h4>
+            <p class="empty-sub">There are no employees to display at the moment.</p>
+          </div>
+        </div>
+
+      <% } else { %>
+
+        <% data.forEach((emp) => { %>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="emp-card">
+              <div class="card-body p-4">
+
+                <!-- Avatar + Name -->
+                <div class="d-flex align-items-center gap-3 mb-1">
+                  <div class="emp-avatar">
+                    <%= emp.name.charAt(0).toUpperCase() %>
+                  </div>
+                  <div>
+                    <p class="emp-name"><%= emp.name %></p>
+                    <p class="emp-email"><%= emp.email %></p>
+                  </div>
+                </div>
+
+                <hr class="emp-divider">
+
+                <!-- Meta Row -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div>
+                    <div class="emp-meta-label">Joined</div>
+                    <div class="emp-meta-value"><%= new Date(emp.createdAt).toDateString() %></div>
+                  </div>
+                  <span class="role-pill"><%= emp.role %></span>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex gap-2">
+                  <a href="/edit/record/<%= emp._id %>" class="btn-edit">
+                    <i class="bi bi-pencil-fill"></i> Edit
+                  </a>
+                  <a href="/delete/admin_record/<%= emp._id %>" class="btn-delete">
+                    <i class="bi bi-trash-fill"></i> Delete
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        <% }) %>
+
+      <% } %>
+
+    </div>
+  </div>
+</section>
+
+<%- include('../layouts/footer.ejs') %>

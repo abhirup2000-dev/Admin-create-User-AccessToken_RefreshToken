@@ -1,0 +1,358 @@
+<%- include('layouts/header.ejs') %>
+
+<style>
+  .signup-section {
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 3rem 0;
+  }
+
+  /* ── Left Panel ── */
+  .signup-left {
+    padding-right: 3rem;
+  }
+
+  .signup-heading {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    color: #1a1a2e;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .signup-sub {
+    font-size: 0.95rem;
+    color: #6c757d;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .feature-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    border: 1.5px solid;
+  }
+
+  .feature-pill.indigo {
+    background: #eef2ff;
+    color: #4f46e5;
+    border-color: #c7d3f9;
+  }
+
+  .feature-pill.green {
+    background: #f0fdf4;
+    color: #16a34a;
+    border-color: #bbf7d0;
+  }
+
+  .feature-pill.dark {
+    background: #f4f4f6;
+    color: #1a1a2e;
+    border-color: #d1d5db;
+  }
+
+  /* ── Signup Card ── */
+  .signup-card {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
+    overflow: hidden;
+  }
+
+  .signup-card-top {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    padding: 1.8rem 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .signup-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.9rem;
+    font-size: 1.3rem;
+    color: #fff;
+  }
+
+  .signup-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .signup-card-sub {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0.25rem 0 0;
+  }
+
+  .signup-card-body {
+    padding: 2rem;
+  }
+
+  /* ── Inputs ── */
+  .input-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #1a1a2e;
+    margin-bottom: 0.4rem;
+  }
+
+  .input-group-custom {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 0.95rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .input-group-custom input,
+  .input-group-custom select {
+    width: 100%;
+    padding: 0.65rem 0.9rem 0.65rem 2.4rem;
+    font-size: 0.88rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    color: #1a1a2e;
+    background: #fafafa;
+    transition:
+      border-color 0.18s,
+      box-shadow 0.18s,
+      background 0.18s;
+    outline: none;
+    appearance: none;
+  }
+
+  .input-group-custom input:focus,
+  .input-group-custom select:focus {
+    border-color: #4f46e5;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .input-group-custom input::placeholder {
+    color: #b0b7c3;
+    font-size: 0.85rem;
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 0.8rem;
+    pointer-events: none;
+  }
+
+  /* ── Buttons ── */
+  .btn-signup {
+    width: 100%;
+    padding: 0.65rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition:
+      opacity 0.18s,
+      box-shadow 0.18s,
+      transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    text-decoration: none;
+  }
+
+  .btn-signup:hover {
+    opacity: 0.92;
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+    color: #fff;
+  }
+
+  .btn-signup:active {
+    transform: scale(0.98);
+  }
+
+  .btn-login-switch {
+    width: 100%;
+    padding: 0.62rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6c757d;
+    background: transparent;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    cursor: pointer;
+    transition:
+      border-color 0.18s,
+      color 0.18s,
+      background 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .btn-login-switch:hover {
+    border-color: #1a1a2e;
+    color: #1a1a2e;
+    background: #f4f4f6;
+  }
+</style>
+
+<section class="signup-section">
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <!-- Left Info -->
+      <div class="col-lg-6 d-none d-lg-block">
+        <div class="signup-left">
+          <h1 class="signup-heading">Create Your<br />Account 🚀</h1>
+          <p class="signup-sub">
+            Join the RBAC system and manage access, roles, and permissions
+            efficiently.
+          </p>
+          <div class="feature-pills">
+            <span class="feature-pill indigo">
+              <i class="bi bi-lightning-charge"></i> Fast Setup
+            </span>
+            <span class="feature-pill green">
+              <i class="bi bi-shield-check"></i> Secure
+            </span>
+            <span class="feature-pill dark">
+              <i class="bi bi-diagram-3"></i> Scalable
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signup Card -->
+      <div class="col-lg-5 col-md-8 col-12">
+        <div class="signup-card">
+          <div class="signup-card-top">
+            <div class="signup-card-icon">
+              <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <p class="signup-card-title">Sign Up</p>
+            <p class="signup-card-sub">Create your account to get started</p>
+          </div>
+
+          <div class="signup-card-body">
+            <form action="/create/signup" method="post">
+              <!-- Name -->
+              <div class="mb-1">
+                <label class="input-label" for="name">Full Name</label>
+              </div>
+              <div class="input-group-custom">
+                <i class="bi bi-person input-icon"></i>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="John Doe"
+                  required
+                />
+              </div>
+
+              <!-- Email -->
+              <div class="mb-1">
+                <label class="input-label" for="email">Email Address</label>
+              </div>
+              <div class="input-group-custom">
+                <i class="bi bi-envelope input-icon"></i>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="name@example.com"
+                  required
+                />
+              </div>
+
+              <!-- Phone -->
+              <div class="mb-1">
+                <label class="input-label" for="phone">Phone Number</label>
+              </div>
+              <div class="input-group-custom">
+                <i class="bi bi-telephone input-icon"></i>
+                <input
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  placeholder="+91 00000 00000"
+                  required
+                />
+              </div>
+
+              <!-- Role -->
+              <div class="mb-1">
+                <label class="input-label" for="role">Role</label>
+              </div>
+              <div class="input-group-custom mb-4">
+                <i class="bi bi-person-badge input-icon"></i>
+                <select name="role" id="role" required>
+                  <option value="" disabled selected>Select a role</option>
+                  <option value="employee">Employee</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <i class="bi bi-chevron-down select-arrow"></i>
+              </div>
+
+              <button type="submit" class="btn-signup">
+                <i class="bi bi-person-check"></i> Register User
+              </button>
+
+              <a href="/login/view" class="btn-login-switch">
+                <i class="bi bi-box-arrow-in-right"></i> Already have an
+                account? Login
+              </a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('layouts/footer.ejs') %>

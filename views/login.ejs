@@ -1,0 +1,345 @@
+<%- include('layouts/header.ejs') %>
+
+<style>
+  .login-section {
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 3rem 0;
+  }
+
+  /* ── Left Panel ── */
+  .login-left {
+    padding-right: 3rem;
+  }
+
+  .login-heading {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    color: #1a1a2e;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .login-sub {
+    font-size: 0.95rem;
+    color: #6c757d;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .feature-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    border: 1.5px solid;
+  }
+
+  .feature-pill.indigo {
+    background: #eef2ff;
+    color: #4f46e5;
+    border-color: #c7d3f9;
+  }
+
+  .feature-pill.green {
+    background: #f0fdf4;
+    color: #16a34a;
+    border-color: #bbf7d0;
+  }
+
+  .feature-pill.dark {
+    background: #f4f4f6;
+    color: #1a1a2e;
+    border-color: #d1d5db;
+  }
+
+  /* ── Login Card ── */
+  .login-card {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
+    overflow: hidden;
+  }
+
+  .login-card-top {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    padding: 1.8rem 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .login-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.9rem;
+    font-size: 1.3rem;
+    color: #fff;
+  }
+
+  .login-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .login-card-sub {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0.25rem 0 0;
+  }
+
+  .login-card-body {
+    padding: 2rem;
+  }
+
+  /* ── Inputs ── */
+  .input-group-custom {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 0.95rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .input-group-custom input {
+    width: 100%;
+    padding: 0.65rem 0.9rem 0.65rem 2.4rem;
+    font-size: 0.88rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    color: #1a1a2e;
+    background: #fafafa;
+    transition:
+      border-color 0.18s,
+      box-shadow 0.18s,
+      background 0.18s;
+    outline: none;
+  }
+
+  .input-group-custom input:focus {
+    border-color: #4f46e5;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .input-group-custom input::placeholder {
+    color: #b0b7c3;
+    font-size: 0.85rem;
+  }
+
+  .input-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #1a1a2e;
+    margin-bottom: 0.4rem;
+  }
+
+  /* ── Buttons ── */
+  .btn-login {
+    width: 100%;
+    padding: 0.65rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition:
+      opacity 0.18s,
+      box-shadow 0.18s,
+      transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    text-decoration: none;
+  }
+
+  .btn-login:hover {
+    opacity: 0.92;
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+    color: #fff;
+  }
+
+  .btn-login:active {
+    transform: scale(0.98);
+  }
+
+  .btn-admin-switch {
+    width: 100%;
+    padding: 0.62rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6c757d;
+    background: transparent;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    cursor: pointer;
+    transition:
+      border-color 0.18s,
+      color 0.18s,
+      background 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .btn-admin-switch:hover {
+    border-color: #1a1a2e;
+    color: #1a1a2e;
+    background: #f4f4f6;
+  }
+
+  .login-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 1.5rem 0 1.2rem;
+  }
+
+  .signup-text {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin: 0;
+  }
+
+  .signup-text a {
+    color: #4f46e5;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .signup-text a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<section class="login-section">
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <!-- Left Info -->
+      <div class="col-lg-6 d-none d-lg-block">
+        <div class="login-left">
+          <h1 class="login-heading">Welcome<br />Back 👋</h1>
+          <p class="login-sub">
+            Access your employee dashboard, manage your profile, and stay
+            connected with your organization.
+          </p>
+          <div class="feature-pills">
+            <span class="feature-pill indigo">
+              <i class="bi bi-shield-check"></i> Secure Login
+            </span>
+            <span class="feature-pill green">
+              <i class="bi bi-lightning-charge"></i> Fast Access
+            </span>
+            <span class="feature-pill dark">
+              <i class="bi bi-lock"></i> RBAC Enabled
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Login Card -->
+      <div class="col-lg-5 col-md-8 col-12">
+        <div class="login-card">
+          <div class="login-card-top">
+            <div class="login-card-icon">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <p class="login-card-title">Employee Login</p>
+            <p class="login-card-sub">Sign in to continue</p>
+          </div>
+
+          <div class="login-card-body">
+            <form action="/create/login" method="post">
+              <!-- Email -->
+              <div class="mb-3">
+                <label class="input-label" for="email">Email Address</label>
+                <div class="input-group-custom">
+                  <i class="bi bi-envelope input-icon"></i>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="name@example.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Password -->
+              <div class="mb-4">
+                <label class="input-label" for="password">Password</label>
+                <div class="input-group-custom">
+                  <i class="bi bi-lock input-icon"></i>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                  />
+                </div>
+              </div>
+
+              <button type="submit" class="btn-login">
+                <i class="bi bi-box-arrow-in-right"></i> Login as Employee
+              </button>
+
+              <a href="/admin/login" class="btn-admin-switch">
+                <i class="bi bi-shield-lock"></i> Admin Login
+              </a>
+            </form>
+
+            <hr class="login-divider" />
+
+            <p class="signup-text">
+              Don't have an account?
+              <a href="/signup/view">Sign up</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('layouts/footer.ejs') %>

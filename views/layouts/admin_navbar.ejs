@@ -1,0 +1,188 @@
+<style>
+  .admin-navbar {
+    background: #1a1a2e;
+    padding: 0.75rem 0;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .admin-navbar .navbar-brand {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .admin-brand-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .admin-brand-label {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .admin-brand-label span:first-child {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .admin-brand-label span:last-child {
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .admin-navbar .nav-link {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6) !important;
+    padding: 0.45rem 0.75rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition:
+      background 0.18s,
+      color 0.18s;
+    text-decoration: none;
+  }
+
+  .admin-navbar .nav-link:hover,
+  .admin-navbar .nav-link.active {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .admin-navbar .nav-link i {
+    font-size: 0.95rem;
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 0 0.25rem;
+  }
+
+  .btn-admin-logout {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #fff;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 0.42rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    transition:
+      background 0.18s,
+      border-color 0.18s,
+      color 0.18s;
+  }
+
+  .btn-admin-logout:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+  }
+
+  .admin-navbar .navbar-toggler {
+    border: none;
+    padding: 0.3rem 0.5rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+  }
+
+  .admin-navbar .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  @media (max-width: 991px) {
+    .admin-navbar .navbar-collapse {
+      padding: 1rem 0 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 0.75rem;
+    }
+
+    .nav-divider {
+      display: none;
+    }
+
+    .btn-admin-logout {
+      margin-top: 0.5rem;
+      justify-content: center;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg admin-navbar">
+  <div class="container-xl">
+    <!-- Brand -->
+    <a class="navbar-brand" href="/admin/dashboard">
+      <div class="admin-brand-icon">
+        <i class="bi bi-shield-lock-fill"></i>
+      </div>
+      <div class="admin-brand-label">
+        <span>RBAC Admin</span>
+        <span>Control Panel</span>
+      </div>
+    </a>
+
+    <!-- Toggle -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarResponsive"
+    >
+      <i class="bi bi-list fs-5"></i>
+    </button>
+
+    <!-- Nav Items -->
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 mt-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/dashboard">
+            <i class="bi bi-speedometer2"></i> Dashboard
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="bi bi-people"></i> Employees
+          </a>
+        </li>
+
+        <li class="nav-item d-none d-lg-flex align-items-center">
+          <div class="nav-divider"></div>
+        </li>
+
+        <li class="nav-item">
+          <a class="btn-admin-logout" href="/admin/logout">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
