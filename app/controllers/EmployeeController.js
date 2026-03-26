@@ -157,7 +157,7 @@ class EmployeeController {
         });
       }
 
-      // 🔐 First login case
+      // First login case
       if (user.firstLogin) {
         req.flash("success", "Login Successfull & Password change required");
 
@@ -173,6 +173,67 @@ class EmployeeController {
       return res.redirect("/login/view");
     }
   }
+
+  // async empLogin(req, res) {
+  //     try {
+  //       const { email, password } = req.body;
+  
+  //       if (!email || !password) {
+  //         req.flash("error", "All input is required");
+  //         return res.redirect("/login/view");
+  //       }
+  
+  //       const user = await Admin.findOne({ email });
+  
+  //       if (
+  //         !user ||
+  //         user.role !== "employee" ||
+  //         !(await bcrypt.compare(password, user.password))
+  //       ) {
+  //         req.flash("error", "Invalid email or password");
+  //         return res.redirect("/login/view");
+  //       }
+  
+  //       //  ACCESS TOKEN (short)
+  //       const accessToken = jwt.sign(
+  //         {
+  //           userId: user._id,
+  //           email: user.email,
+  //           role: user.role,
+  //         },
+  //         process.env.JWT_SECRET_KEY,
+  //         { expiresIn: "1m" },
+  //       );
+  
+  //       //  REFRESH TOKEN (long)
+  //       const refreshToken = jwt.sign(
+  //         { userId: user._id },
+  //         process.env.JWT_REFRESH_SECRET_KEY,
+  //         { expiresIn: "7d" },
+  //       );
+  
+  //       //  Save refresh token in DB
+  //       user.refreshToken = refreshToken;
+  //       await user.save();
+  
+  //       //  Cookies
+  //       res.cookie("accessToken", accessToken, {
+  //         httpOnly: true,
+  //         maxAge: 1 * 60 * 1000,
+  //       });
+  
+  //       res.cookie("refreshToken", refreshToken, {
+  //         httpOnly: true,
+  //         maxAge: 7 * 24 * 60 * 60 * 1000,
+  //       });
+  
+  //       return res.redirect("/dashboard");
+  //     } catch (error) {
+  //       console.log(error);
+  //       req.flash("error", "Something went wrong");
+  //       return res.redirect("/login/view");
+  //     }
+  //   }
 
   async EmpChangePassword(req, res) {
     try {

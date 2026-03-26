@@ -44,7 +44,7 @@ app.use(require('./app/routes/index'))
 
 
 
-const port = 5004
+const port = 4001
 
 app.listen(port, (err)=>{
   if(err){

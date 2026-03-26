@@ -29,63 +29,64 @@ class AdminController {
     });
   }
 
-  // admin login
+
   async adminLogin(req, res) {
     try {
-      console.log("BODY:", req.body);
-
-      // Get user input
       const { email, password } = req.body;
 
-      // Validate user input
       if (!email || !password) {
-        console.log("All input is required");
-
+        req.flash("error", "All input is required");
         return res.redirect("/admin/login");
       }
 
-      // Validate if user exist in our database
       const user = await Admin.findOne({ email });
 
       if (
-        user &&
-        user.role === "admin" &&
-        (await bcrypt.compare(password, user.password))
+        !user ||
+        user.role !== "admin" ||
+        !(await bcrypt.compare(password, user.password))
       ) {
-        // Create token
-        const token = jwt.sign(
-          {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-          },
-          process.env.JWT_SECRET_KEY,
-          {
-            expiresIn: "1d",
-          },
-        );
-
-        if (token) {
-          res.cookie("admintoken", token, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-          });
-
-          return res.redirect("/admin/dashboard");
-        } else {
-          req.flash("error", "Login failed");
-
-          return res.redirect("/admin/login");
-        }
+        req.flash("error", "Invalid email or password");
+        return res.redirect("/admin/login");
       }
 
-      req.flash("error", "Invalid email or password");
+      //  ACCESS TOKEN (short)
+      const accessToken = jwt.sign(
+        {
+          userId: user._id,
+          email: user.email,
+          role: user.role,
+        },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "1m" },
+      );
 
-      return res.redirect("/admin/login");
+      //  REFRESH TOKEN (long)
+      const refreshToken = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_REFRESH_SECRET_KEY,
+        { expiresIn: "7d" },
+      );
+
+      //  Save refresh token in DB
+      user.refreshToken = refreshToken;
+      await user.save();
+
+      //  Cookies
+      res.cookie("adminAccessToken", accessToken, {
+        httpOnly: true,
+        maxAge: 1 * 60 * 1000,
+      });
+
+      res.cookie("adminRefreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      return res.redirect("/admin/dashboard");
     } catch (error) {
+      console.log(error);
       req.flash("error", "Something went wrong");
-
       return res.redirect("/admin/login");
     }
   }
@@ -108,20 +109,24 @@ class AdminController {
 
   async editAdminProfile(req, res) {
     try {
-      console.log(req.admin);
-      const id = req.admin._id;
+      const id = req.admin.userId;
+
       const user = await Admin.findById(id);
 
+      if (!user) {
+        return res.redirect("/admin/dashboard");
+      }
+
       return res.render("edit_data", {
-        title: "Admin profile page",
+        title: "Admin Profile",
         data: user,
       });
     } catch (err) {
+      console.log(err);
       return res.redirect("/admin/dashboard");
     }
   }
 
-  //update admin
   async updateAdminData(req, res) {
     try {
       const user = await Admin.findById(req.params.id);
@@ -155,6 +160,7 @@ class AdminController {
     }
   }
 
+
   async deactivateUser(req, res) {
     try {
       const user = await Admin.findById(req.params.id);
@@ -181,15 +187,15 @@ class AdminController {
 
   async deleteUser(req, res) {
     try {
-      const { id } = req.params;
+      const id = req.params.id;
 
-      // 🔒 Only admin allowed
-      if (req.admin?.is_admin !== "admin") {
+      //  Only admin allowed
+      if (req.admin?.role !== "admin") {
         req.flash("error", "Unauthorized access");
         return res.redirect("/admin/login");
       }
 
-      // 🚫 Prevent self delete
+      //  Prevent self delete
       if (req.admin.userId === id) {
         req.flash("error", "You cannot delete yourself");
         return res.redirect("/admin/dashboard");
@@ -221,15 +227,22 @@ class AdminController {
   }
 
   // logout user
-  async adminLogout(req, res) {
-    try {
-      // clear cookie
-      res.clearCookie("admintoken");
+  async logout(req, res) {
+    const refreshToken = req.cookies?.adminRefreshToken;
 
-      return res.redirect("/admin/login");
-    } catch (error) {
-      req.flash("error", error.message);
+    if (refreshToken) {
+      const user = await Admin.findOne({ refreshToken });
+
+      if (user) {
+        user.refreshToken = null;
+        await user.save();
+      }
     }
+
+    res.clearCookie("adminAccessToken");
+    res.clearCookie("adminRefreshToken");
+
+    return res.redirect("/admin/login");
   }
 }
 
