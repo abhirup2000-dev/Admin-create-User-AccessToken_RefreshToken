@@ -134,6 +134,11 @@ class EmployeeController {
         return res.redirect("/login/view");
       }
 
+      if (user.isActive === "Inactive") {
+        req.flash("error", "Your account is blocked. Contact admin.");
+        return res.redirect("/login/view");
+      }
+
       const token = jwt.sign(
         {
           userId: user._id,

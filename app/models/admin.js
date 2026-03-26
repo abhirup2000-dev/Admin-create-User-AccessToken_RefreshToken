@@ -36,8 +36,14 @@ const AdminSchema = new Schema(
     },
 
     isActive: {
-      type: Boolean,
-      default: true,
+      type: String,
+      enum:['Active','Inactive'],
+      default: 'Active',
+    },
+
+    refreshToken:{
+      type: String,
+      default: null,
     },
 
     firstLogin: {

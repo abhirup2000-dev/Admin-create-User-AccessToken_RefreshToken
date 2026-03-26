@@ -184,6 +184,43 @@
     color: #6c757d;
     margin: 0;
   }
+
+  /* Status badge (top-right clean look) */
+.status-badge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+  letter-spacing: 0.06em;
+}
+
+.status-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Subtle premium hover glow */
+.emp-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.emp-card::after {
+  pointer-events: none;
+}
+
+.emp-card:hover::after {
+  opacity: 1;
+}
+
 </style>
 
 <section class="records-section">
@@ -218,47 +255,65 @@
 
         <% data.forEach((emp) => { %>
 
-          <div class="col-lg-4 col-md-6">
-            <div class="emp-card">
-              <div class="card-body p-4">
+  <div class="col-lg-4 col-md-6">
+    <div class="emp-card">
+      <div class="card-body p-4 position-relative">
 
-                <!-- Avatar + Name -->
-                <div class="d-flex align-items-center gap-3 mb-1">
-                  <div class="emp-avatar">
-                    <%= emp.name.charAt(0).toUpperCase() %>
-                  </div>
-                  <div>
-                    <p class="emp-name"><%= emp.name %></p>
-                    <p class="emp-email"><%= emp.email %></p>
-                  </div>
-                </div>
+        <!-- Status badge -->
+        <span class="status-badge <%= emp.isActive ? 'active' : 'inactive' %>">
+          <%= emp.isActive==='Active' ? 'Active' : 'Inactive' %>
+        </span>
 
-                <hr class="emp-divider">
-
-                <!-- Meta Row -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <div>
-                    <div class="emp-meta-label">Joined</div>
-                    <div class="emp-meta-value"><%= new Date(emp.createdAt).toDateString() %></div>
-                  </div>
-                  <span class="role-pill"><%= emp.role %></span>
-                </div>
-
-                <!-- Actions -->
-                <div class="d-flex gap-2">
-                  <a href="/edit/record/<%= emp._id %>" class="btn-edit">
-                    <i class="bi bi-pencil-fill"></i> Edit
-                  </a>
-                  <a href="/delete/admin_record/<%= emp._id %>" class="btn-delete">
-                    <i class="bi bi-trash-fill"></i> Delete
-                  </a>
-                </div>
-
-              </div>
-            </div>
+        <!-- Avatar + Name -->
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <div class="emp-avatar">
+            <%= emp.name.charAt(0).toUpperCase() %>
           </div>
+          <div>
+            <p class="emp-name"><%= emp.name %></p>
+            <p class="emp-email"><%= emp.email %></p>
+          </div>
+        </div>
 
-        <% }) %>
+        <hr class="emp-divider">
+
+        <!-- Meta -->
+        <div class="mb-3">
+          <div class="emp-meta-label">Joined</div>
+          <div class="emp-meta-value">
+            <%= new Date(emp.createdAt).toDateString() %>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="role-pill"><%= emp.role %></span>
+        </div>
+
+        <!-- Actions -->
+        <% if(emp.role === 'employee'){ %>
+          <div class="d-flex gap-2">
+
+         <!-- Toggle Active/Inactive -->
+         <a href="/toggle-status/<%= emp._id %>" class="btn-edit">
+          <% if(emp.isActive === 'Active'){ %>
+            <i class="bi bi-slash-circle"></i> Block
+          <% } else { %>
+            <i class="bi bi-check-circle"></i> Unblock
+          <% } %>
+          </a>
+
+        <!-- Delete -->
+        <a href="/delete/<%= emp._id %>" class="btn-delete">
+          <i class="bi bi-trash-fill"></i> Delete
+        </a>
+
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+      <% }) %>
 
       <% } %>
 
