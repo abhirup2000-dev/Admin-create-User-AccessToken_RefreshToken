@@ -18,6 +18,7 @@ router.get("/login/view", EmployeeController.loginPage);
 
 router.post("/create/login", EmployeeController.empLogin);
 
+//check token before access protecting routes
 router.use(EmployeeAuthCheck);
 
 router.get("/change-pass/view", EmployeeController.passChange);

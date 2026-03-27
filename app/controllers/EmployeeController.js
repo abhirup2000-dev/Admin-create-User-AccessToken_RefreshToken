@@ -245,7 +245,7 @@ class EmployeeController {
         return res.redirect("/change-pass/view");
       }
 
-      // 🔐 Get userId from token (NOT from body)
+      // Get userId from token (NOT from body)
       const userId = req.user.userId;
 
       const user = await Admin.findById(userId);

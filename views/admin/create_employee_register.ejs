@@ -1,0 +1,201 @@
+<%- include('../layouts/header.ejs') %>
+<%- include('../layouts/admin_navbar.ejs') %>
+
+<style>
+  .signup-section {
+    background: linear-gradient(to bottom, #f8fafc, #eef2ff);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 3rem 0;
+  }
+
+  .signup-heading {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.2;
+  }
+
+  .signup-sub {
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin: 1rem 0 2rem;
+  }
+
+  .feature-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    border: 1px solid;
+    margin-right: 0.5rem;
+  }
+
+  .indigo { background:#eef2ff; color:#4f46e5; }
+  .green { background:#ecfdf5; color:#16a34a; }
+  .dark { background:#f3f4f6; color:#111827; }
+
+  /* CARD */
+  .signup-card {
+    border-radius: 20px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+  }
+
+  .signup-card-top {
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    padding: 1.8rem;
+    text-align: center;
+    color: #fff;
+  }
+
+  .signup-card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.8rem;
+    font-size: 1.3rem;
+  }
+
+  .signup-card-body {
+    padding: 2rem;
+    background: #fff;
+  }
+
+  .input-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .input-group-custom {
+    position: relative;
+    margin-bottom: 1.2rem;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+  }
+
+  .input-group-custom input {
+    width: 100%;
+    padding: 0.6rem 0.9rem 0.6rem 2.3rem;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .input-group-custom input:focus {
+    border-color: #6366f1;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+
+  .btn-signup {
+    width: 100%;
+    padding: 0.65rem;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    color: #fff;
+    transition: 0.2s;
+  }
+
+  .btn-signup:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(99,102,241,0.3);
+  }
+
+  .btn-back {
+    width: 100%;
+    margin-top: 0.6rem;
+    border-radius: 10px;
+  }
+</style>
+
+<section class="signup-section">
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+
+      <!-- LEFT -->
+      <div class="col-lg-6 d-none d-lg-block">
+        <h1 class="signup-heading">Add New Employee 👨‍💼</h1>
+        <p class="signup-sub">
+          Create employee accounts and manage access with full admin control.
+        </p>
+
+        <div>
+          <span class="feature-pill indigo"><i class="bi bi-person-plus"></i> Quick Add</span>
+          <span class="feature-pill green"><i class="bi bi-shield-lock"></i> Secure</span>
+          <span class="feature-pill dark"><i class="bi bi-people"></i> Team</span>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="col-lg-5 col-md-8">
+        <div class="signup-card">
+
+          <div class="signup-card-top">
+            <div class="signup-card-icon">
+              <i class="bi bi-person-plus-fill"></i>
+            </div>
+            <h5>Create Employee</h5>
+            <small>Admin only access</small>
+          </div>
+
+          <div class="signup-card-body">
+
+            <form action="/admin/create-employee" method="POST">
+
+              <label class="input-label">Full Name</label>
+              <div class="input-group-custom">
+                <i class="bi bi-person input-icon"></i>
+                <input type="text" name="name" required>
+              </div>
+
+              <label class="input-label">Email</label>
+              <div class="input-group-custom">
+                <i class="bi bi-envelope input-icon"></i>
+                <input type="email" name="email" required>
+              </div>
+
+              <label class="input-label">Phone</label>
+              <div class="input-group-custom">
+                <i class="bi bi-telephone input-icon"></i>
+                <input type="text" name="phone" required>
+              </div>
+
+              <!-- LOCK ROLE -->
+              <input type="hidden" name="role" value="employee">
+
+              <button class="btn-signup">
+                <i class="bi bi-check-circle"></i> Create Employee
+              </button>
+
+              <a href="/admin/dashboard" class="btn btn-outline-secondary btn-back">
+                Back to Dashboard
+              </a>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<%- include('../layouts/footer.ejs') %>
