@@ -44,6 +44,7 @@ class EmployeeController {
     });
   }
 
+  //register admin
   async Signup(req, res) {
     try {
       const { name, email, phone, role } = req.body;
@@ -147,13 +148,13 @@ class EmployeeController {
           role: user.role,
         },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "1d" },
+        { expiresIn: "1h" },
       );
 
       if (token) {
         res.cookie("token", token, {
           httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000, // 1 day
+          maxAge: 1 * 60 * 60 * 1000, // 1 hr
         });
       }
 
@@ -300,7 +301,7 @@ class EmployeeController {
     } catch (error) {
       req.flash("error", "Error loading dashboard");
 
-      res.status(500).send("Error loading dashboard");
+      res.status(StatusCode.SERVER_ERROR).send("Error loading dashboard");
     }
   }
 
